@@ -1,0 +1,29 @@
+删除数据
+	https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.dropna.html
+	#删除行数据中包含空的数据
+	df.dropna()
+
+	#删除列中含空的列数据
+	df.dropna(axis='columns')
+
+填充数据	
+https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.fillna.html
+	#填充数据
+	df.fillna(0)
+
+	#将ABCD列中为弄的数据替换为指定数据
+	values = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
+	df.fillna(value=values)
+	
+插值
+http://pandas.pydata.org/pandas-docs/version/0.16.2/generated/pandas.DataFrame.interpolate.html
+	 #默认插入前后两个数据的平均值
+	 s.interpolate()
+	 
+替换
+https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.replace.html
+	df中的0替换为5
+	df.replace(0, 5)
+	
+数据处理
+https://pandas.pydata.org/pandas-docs/stable/missing_data.html

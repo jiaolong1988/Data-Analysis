@@ -1,0 +1,6 @@
+统计值出现的频次并按降序 排序
+Series.value_counts()
+值
+Series.values
+索引
+Series.index 

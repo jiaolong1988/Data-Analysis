@@ -1,0 +1,23 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sb
+
+%matplotlib inline
+
+1维数据处理
+条形图
+
+统计词频
+cat_order = df['cat_var'].value_counts().index  #由高到低
+base_color = sb.color_palette()[0]
+sb.countplot(data = data, x = '字段名', color = base_color, order = cat_order);
+
+
+#旋转90度
+base_color = sb.color_palette()[0]
+sb.countplot(data = df, x = 'cat_var', color = base_color)
+plt.xticks(rotation = 90)
+
+ase_color = sb.color_palette()[0]
+sb.countplot(data = df, y = 'cat_var', color = base_color)

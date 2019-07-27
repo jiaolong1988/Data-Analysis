@@ -1,0 +1,56 @@
+import pandas as pd
+import numpy as np
+
+s = pd.Series(np.random.randn(4))
+print(s)
+
+print('=================Series基本属性===================')
+print(s.axes)
+print(s.empty)
+print(s.ndim)
+print(s.size)
+print(s.values)
+print(s.head(2))
+print(s.tail(2))
+
+
+
+
+统计值出现的频次并按降序 排序
+Series.value_counts()
+值
+Series.values
+索引
+Series.index 
+
+
+import pandas as pd
+import numpy as np
+
+#Create a Dictionary of series
+d = {'Name':pd.Series(['Tom','James','Ricky','Vin','Steve','Minsu','Jack']),
+     'Age':pd.Series([25,26,25,23,30,29,23]),
+     'Rating':pd.Series([4.23,3.24,3.98,2.56,3.20,4.6,3.8])}
+
+df = pd.DataFrame(d)
+print (df)
+
+print('=================DataFrame基本属性===================')
+print(df.T)
+print(df.axes)
+print(df.dtypes)
+print(df.empty)
+print(df.ndim)
+print(df.shape)
+print(df.size)
+print(df.values)
+print(df.head(2))
+print(df.tail(2))
+df.columns #列
+df.index #行
+
+
+df1.describe() #对数据进行描述
+df3.sort_index(axis=1)#列名排序
+df3.sort_index(axis=0)#行号 排序
+df3.sort_values(by=44)#对指定列排序

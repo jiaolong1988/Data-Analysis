@@ -1,0 +1,97 @@
+#数据帧(DataFrame)是二维数据结构，即数据以行和列的表格方式排列。
+#数据帧(DataFrame)的功能特点：
+#     潜在的列是不同的类型
+#     大小可变
+#     标记轴(行和列)
+#     可以对行和列执行算术运算
+#pandas.DataFrame( data, index, columns, dtype, copy)		
+
+
+一、DataFrame创建
+		import pandas as pd
+		import numpy as np
+
+		print('===================DataFrame创建=============================')
+
+		data = [['Alex',10],['Bob',12],['Clarke',13]]
+		s = pd.DataFrame(data, columns=['Name', 'Age'] ,dtype=float)
+		print(s)
+
+		print('====================字典中的列表==============================')
+		data = {'Name':['Tom', 'Jack', 'Steve', 'Ricky'],'Age':[28,34,29,42],'sex':['m','f','m','f']}
+		df = pd.DataFrame(data,index=['j1', 'j2', 'j3', 'j4'])
+		print(df)
+
+		print('===================列表中的字典===============================')
+		data = [{'a': 1, 'b': 2},{'a': 5, 'b': 10, 'c': 20}]
+		df = pd.DataFrame(data)
+		print(df)
+
+		print('===================获取a列数据===============================')
+		#列索引必须是字典key,否则将无法获取数据
+		df = pd.DataFrame(data, columns=['a','b'],index=['j','l'])
+		print(df['a'])
+
+
+二、列数据管理
+		import pandas as pd
+		print ("================列数据管理============================")
+
+		d = {'one' : pd.Series([1, 2, 3], index=['a', 'c', 'b']),
+			 'two' : pd.Series([1, 2, 3, 4], index=['a', 'b', 'c', 'd'])}
+
+		df = pd.DataFrame(d)
+
+		print ("================列-添加============================")
+		#添加数据方式1
+		df['three'] = pd.Series([10,20,30], index=['a','b','c'])
+		print(df)
+
+		#添加数据方式2
+		df['four'] = df['one'] + df['three']
+		print(df)
+
+		print ("================列-删除数据============================")
+		#直接删除数据，不返回数据结果
+		del df['four']
+
+		#删除数据，返回删除的数据信息
+		p = df.pop('three')
+		print(df)
+
+
+三、行数据管理
+		print ("================行数据管理============================")
+		import pandas as pd
+
+		d = {'one' : pd.Series([1, 2, 3], index=['a', 'b', 'c']), 
+			 'two' : pd.Series([1, 2, 3, 4], index=['a', 'b', 'c', 'd'])}
+
+		df = pd.DataFrame(d)
+		print(df)
+
+		print ("================获取行信息============================")
+		#按指定标签序号获取行信息
+		print(df.loc['b'])
+		#按数字序号获取行信息
+		print(df.iloc[2])
+		df.loc['20170101',['A','C']]
+
+		print ("================数据切片============================")
+		print(df[2:4])
+
+		print ("================合并DataFrame============================")
+		df1 = pd.DataFrame([[1, 2], [3, 4]], columns = ['a','b'])
+		df2 = pd.DataFrame([[5, 6], [7, 8]], columns = ['a','b'])
+
+		df3 = df1.append(df2)
+		print(df3)
+
+		print ("================删除行信息============================")
+		print(df3.drop(0))
+
+		print(df.drop('a'))
+
+		
+#混合标签位置选择
+df.ix[2:4,['A','C']]

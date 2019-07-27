@@ -1,0 +1,55 @@
+0、标准案例
+	import numpy as np 
+	from matplotlib import pyplot as plt 
+	import matplotlib
+	 
+	# fname 为 你下载的字体库路径，注意 SimHei.ttf 字体的路径
+	# 下载地址:https://www.fontpalace.com/font-download/SimHei/
+	zhfont1 = matplotlib.font_manager.FontProperties(fname="SimHei.ttf") 
+
+	#1、设置xy轴数据 
+	x = np.arange(1,11) 
+	y =  2  * x +  5 
+
+	#设置标题
+	plt.title("菜鸟教程 - 测试", fontproperties=zhfont1) 
+
+	#3、设置xy轴显示方式 
+	#fontproperties 设置中文显示，fontsize 设置字体大小
+	plt.xlabel("x 轴", fontproperties=zhfont1)
+	plt.ylabel("y 轴", fontproperties=zhfont1)
+
+	#4、绘制
+	plt.plot(x,y) 
+
+	#5、展示
+	plt.show()
+
+
+
+1、subplot
+	创建一个表格，大小为2*2
+	plt.subplot(2, 2,  3)   
+	第一个参数：行号
+	第二个参数：列号
+	第三个参数：序号
+	
+2、bar
+	bar() 函数来生成条形图。
+	plt.bar(x, y, color = 'g', align = 'center')
+	
+3、hist直方图
+
+	#查询统计频次
+	from matplotlib import pyplot as plt 
+	import numpy as np  
+
+	#用直方图表示统计频次
+	a = np.array([22,87,5,43,56,73,55,54,11,20,51,5,79,31,27]) 
+	plt.hist(a, bins = [0,20,40,60,80,100]) 
+	plt.title("histogram") 
+	plt.show()
+
+	#numpy统计数组中 数据的频率分布
+	hist,bins = np.histogram(a, bins = [0,20,40,60,80,100])  
+	print(hist)

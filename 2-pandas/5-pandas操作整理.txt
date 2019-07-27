@@ -1,0 +1,246 @@
+一、loc与iloc的区别
+为了清晰地表明我们指代的是索引标签还是数字索引，Pandas Series 提供了两个属性 .loc 和 .iloc，来确定使用哪种方式。
+	.loc 表示 位置，用于明确表明我们使用的是标签索引。
+	.iloc 表示整型位置，用于明确表明我们使用的是数字索引。
+
+	import pandas as pd
+	groceries = pd.Series(data = [30, 6, 'Yes', 'No'], index = ['eggs', 'apples', 'milk', 'bread'])
+	print(groceries.loc[['eggs', 'apples']]) 
+	print(groceries.iloc[[2, 3]]) 
+
+
+二、Series 索引与计算
+注意：尺寸大小不可改变，数据的值可变
+基本操作
+	#检查索引是否在 Series中
+	groceries = pd.Series(data = [30, 6, 'Yes', 'No'], index = ['eggs', 'apples', 'milk', 'bread'])
+	y = 'bread' in groceries
+
+	#索引
+	groceries[['milk', 'bread']]
+	groceries[[0, 1]]
+	groceries[[-1]]
+
+	#修改数据
+	groceries['eggs'] = 2
+	#只是返回删除数据的值，为真正删除
+	groceries.drop('apples')
+	#真正删除
+	groceries.drop('apples', inplace = True)
+
+过滤	
+	#在Series中过滤值小于40的数据
+	distance_from_sun = [149.6, 1433.5, 227.9, 108.2, 778.6]
+	planets = ['Earth','Saturn', 'Mars','Venus', 'Jupiter']
+	dist_planets = pd.Series(data = distance_from_sun, index = planets)
+	
+	#series 代表1维数组，表示所有值除18
+	time_light = distance_from_sun /18
+	
+	#条件筛选  重点
+	close_planets = time_light[time_light < 40]
+
+	注意：
+		要确保 算术运算 对所有元素数据类型 都有效。
+	
+二、DataFrame
+列标签：字典的key 
+行标签：字典的val(如果val带标签:那么将是行的标签，如果val不带标签:默认是数字)
+列数据：就是val数据
+行数据：字典中每个val中第1个元素，组合成数据表示为行数据。
+
+
+	带索引
+		items = {'Bob' : pd.Series(data = [245, 25, 55], index = ['bike', 'pants', 'watch']),
+				 'Alice' : pd.Series(data = [40, 110, 500, 45], index = ['book', 'glasses', 'bike', 'pants'])}
+		shopping_carts = pd.DataFrame(items)
+
+	不带索引
+		items2 = [{'bikes': 20, 'pants': 30, 'watches': 35}, 
+				  {'watches': 10, 'glasses': 50, 'bikes': 15, 'pants':5}]
+		store_items = pd.DataFrame(items2, index = ['store 1', 'store 2'])
+
+
+	三、常用属性
+		#获得 数据，行索引，列索引
+		print(shopping_carts.values)
+		print(shopping_carts.index)
+		print(shopping_carts.columns)
+
+		#获得指定列
+		print(store_items[['bikes']])
+		#获得指定列的所有行数据
+		print(store_items[['bikes', 'pants']])
+		
+		#获得指定行的所有列数据
+		print( store_items.loc[['store 1']])
+		
+		#获得指定的值：dataframe[column][row]
+		print( store_items['bikes']['store 2'])
+		
+		
+		#添加一列数据
+		store_items['shirts'] = [15,2]
+		#添加一列数据，列与列间 可进行 加减乘除。
+		store_items['suits'] = store_items['pants'] + store_items['shirts']		
+		#新添加一列（'new watches'），格式：dataframe[column][row]，数据为'watches'列的第二行至最后一行数据
+		store_items['new watches'] = store_items['watches'][1:]
+		
+		#添加新的DataFrame
+		store_items = store_items.append(new_store)
+			new_items = [{'bikes': 20, 'pants': 30, 'watches': 35, 'glasses': 4}]
+			new_store = pd.DataFrame(new_items, index = ['store 3'])
+		
+		#指定位置添加指定数据，insert(loc,label,data)：列的位置，标签名称，数据
+		store_items.insert(4, 'shoes', [8,5,0])
+		
+		
+		pop只能删除列
+		store_items.pop('new watches')
+		
+		#axis=0表示行，axis=1表示列，删除行、列		
+		store_items = store_items.drop(['store 2', 'store 1'], axis = 0)
+		store_items = store_items.drop(['watches', 'shoes'], axis = 1)
+		
+		修改标签名称，index：表示行，columns表示列
+		store_items = store_items.rename(index = {'store 3': 'last store'})
+		store_items = store_items.rename(columns = {'bikes': 'hats'})
+		
+四、选择数据范围
+	通过在DataFrame中设定行、列的标签（通过columns 和 index 设置）来获得指定的数据。
+	
+	#获得指定 行标签、列标签 的数据
+	sel_shopping_cart = pd.DataFrame(items, index = ['pants', 'book'])
+	bob_shopping_cart = pd.DataFrame(items, columns=['Bob'])
+	alice_sel_shopping_cart=pd.DataFrame(items, index = ['glasses', 'bike'], columns = ['Alice'])
+
+处理 NaN
+注意：不在原修改或删除值
+
+	#统计NaN的数量（True=1，False=0, isnull()是否为空，sum()统计每列的和）
+	x =  store_items.isnull().sum().sum()
+	
+	#统计每列 值非NaN 的数量，总数量需要使用sum()
+	y = store_items.count()
+
+
+	#返回的结果是：删除 包含任何 NaN 值的行或列（axis = 0 表示行，axis = 1表示列），非删除元数据
+	store_items.dropna(axis = 0)
+	#真正删除，删除元数据inplace=True
+	store_items.dropna(axis = 0, inplace=False)
+
+
+	#将所有 NaN 值替换为 0
+	store_items.fillna(0)
+
+	#填充
+	#将 NaN 值替换为 DataFrame中的 上一个值，称之为：前向填充。
+	#将 NaN 值替换为 DataFrame中的 后一个值，称之为：后向填充。
+	#在填充替换 NaN 值时，我们可以使用 列或行 中的值。
+	#.fillna(method = 'ffill', axis) 将通过前向填充 (ffill) 方法沿着给定 axis 使用上个已知值替换 NaN 值
+	#.fillna(method = 'backfill', axis)将通过后向填充 (backfill) 方法沿着给定 axis 使用下个已知值替换 NaN 值
+
+	#注意：axis=0 表示列，axis=1表示行（与以前的表示方式不一致）
+	store_items.fillna(method = 'ffill', axis = 0) #store 1 中的 NaN 值没有被替换掉。因为这列前面没有值，因为 NaN 值是该列的第一个值
+	store_items.fillna(method = 'ffill', axis = 1)
+
+	store_items.fillna(method = 'backfill', axis = 0)#列
+	store_items.fillna(method = 'backfill', axis = 1)#行
+
+	#插值
+	#按列插值，其列的上一个元素的值
+	store_items.interpolate(method = 'linear', axis = 0)
+	#按行插值，取前后各一个数据的平均值
+	store_items.interpolate(method = 'linear', axis = 1)
+
+
+DataFrame操作
+	import pandas as pd
+	import numpy as np
+	#设置dataFrame的精度到小数点后一位。
+	pd.set_option('precision', 1)
+
+	books = pd.Series(data = ['Great Expectations', 'Of Mice and Men', 'Romeo and Juliet', 'The Time Machine', 'Alice in Wonderland' ])
+	authors = pd.Series(data = ['Charles Dickens', 'John Steinbeck', 'William Shakespeare', ' H. G. Wells', 'Lewis Carroll' ])
+	user_1 = pd.Series(data = [3.2, np.nan ,2.5])
+	user_2 = pd.Series(data = [5., 1.3, 4.0, 3.8])
+	user_3 = pd.Series(data = [2.0, 2.3, np.nan, 4])
+	user_4 = pd.Series(data = [4, 3.5, 4, 5, 4.2])
+
+
+	dat = {'Book Title' : books,
+		   'Author' : authors,
+		   'User 1' : user_1,
+		   'User 2' : user_2,
+		   'User 3' : user_3,
+		   'User 4' : user_4}
+
+	book_ratings = pd.DataFrame(dat)
+	#填充数据，并修改元数据
+	book_ratings.fillna(book_ratings.mean(), inplace = True)
+
+	#any() 函数用于判断给定的可迭代参数 iterable 是否全部为 False，则返回 False，如果有一个为 True，则返回 True。
+	#元素除了是 0、空、FALSE 外都算 TRUE。 
+	# 行：axis =1、 列：axis=0
+
+	#表示按行进行判断，所有值是否有等5，并返回一个Series的行号
+	#(book_ratings == 5).any(axis = 1)
+	best_rated = book_ratings[(book_ratings == 5).any(axis = 1)]['Book Title'].values
+
+	#表示过滤数据,这其实还是一个dataFrame
+	#book_ratings[(book_ratings == 5).any(axis = 1)] 
+
+	
+加载数据
+	# 我们将 Google 股票数据加载到 DataFrame 中
+	Google_stock = pd.read_csv('./GOOG.csv')
+
+	# 我们输出关于 Google_stock 的一些信息
+	print('Google_stock is of type:', type(Google_stock))
+	print('Google_stock has shape:', Google_stock.shape)
+
+	# .head(N) 或 .tail(N) 分别显示前 N 行和后 N 行数据
+    #查看前 5 行数据
+	Google_stock.head()
+	最后 5 行数据
+	Google_stock.tail()
+	
+	数据集中是否有任何 NaN 值
+	Google_stock.isnull().any()
+
+	#.describe() 方法，可以获取关于 DataFrame 每列的描述性统计信息
+	Google_stock.describe()
+	#对单列应用 .describe() 
+	Google_stock['Adj Close'].describe()
+	
+	统计函数
+	print('Maximum values of each column:\n', Google_stock.max())
+	print('Minimum Close value:', Google_stock['Close'].min())
+	print('Average value of each column:\n', Google_stock.mean())
+
+	
+	另一个重要统计学衡量指标是数据相关性。数据相关性可以告诉我们不同列的数据是否有关联。我们可以使用 .corr() 方法获取不同列之间的关联性
+	Google_stock.corr()
+
+	groupby()分组
+	data.groupby(['Year'])['Salary'].sum()
+	data.groupby(['Year'])['Salary'].mean()
+	data.groupby(['Year', 'Department'])['Salary'].sum()
+	
+	#统计出现次数
+	data.groupby(['name']).size()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,48 @@
+'''面板(Panel)是一个三维数组
+    轴(axis)这个名称旨在给出描述涉及面板数据的操作的一些语义。它们是：
+    1、items      - axis 0，每个项目对应于内部包含的数据帧(DataFrame)。
+    2、major_axis - axis 1，它是每个数据帧(DataFrame)的索引(行)。
+    3、minor_axis - axis 2，它是每个数据帧(DataFrame)的列。
+    
+    pandas.Panel(data, items, major_axis, minor_axis, dtype, copy)
+'''
+
+import pandas as pd
+import numpy as np
+
+#创建空面板
+p = pd.Panel()
+
+#ndarray数据创建 面板
+data = np.random.rand(2,4,5)
+p = pd.Panel(data)
+
+
+#获取三维数组中的数据
+I1 = np.arange(12).reshape(4,3)
+I2 = np.arange(8).reshape(4,2)
+data = {'Item1' : pd.DataFrame(I1), 
+        'Item2' : pd.DataFrame(I2)}
+p = pd.Panel(data)
+
+print('=============I1===================')
+print(I1)
+
+print('=============I2===================')
+print(I2)
+
+print('=============Panel面板===================')
+#显示以下取值范围
+print(p)
+
+print('=============Items===================')
+#获得指定二维数组
+print(p['Item1'])
+
+print('=============major_xs===================')
+#获得二维数组的指定行
+print(p.major_xs(1))
+
+print('=============minor_xs===================')
+#获得二维数组的指定列
+print(p.minor_xs(1))

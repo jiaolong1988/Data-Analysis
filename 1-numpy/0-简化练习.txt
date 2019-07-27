@@ -1,0 +1,87 @@
+一、创建ndarray的方式
+import numpy as np
+
+#设置了起始值、终止值及步长：
+a = np.arange(10,20,2)
+b = np.array([1,2,3])
+c = np.asarray([1,2,3])
+d = np.fromiter(iter(range(5)),dtype = int)
+print(a.ndim, a.shape, a.size, a.dtype, a.itemsize)
+
+
+二、ndarray的索引
+import numpy as np
+
+a = np.array([[1,2,3],[3,4,5],[4,5,6]])  
+print(a)
+print('=========切片索引================')
+b = a[0:3:2]
+
+print('=========冒号索引================')
+print(a[...,1])
+print(a[1, ...])
+print(a[..., 1:])
+
+print('=========布尔索引================')
+print (a[a > 5])
+
+print('=========根据行号索引================')
+print (a[[1,0,2]])
+
+print('=========根据行号、列号索引================')
+print (a[np.ix_([0,2,1],[2,0,1])])
+
+
+三、迭代ndarray
+	import numpy as np
+
+	a = np.arange(6).reshape(3,2)
+	print(a)
+	print('==========默认按行=====================')
+	for x in np.nditer(a):
+		print(x)
+		
+	print('==========a.T指定按行=====================')
+	#order=C/F,C:按行，F:按列
+	for x in np.nditer(a.T , order = 'C'):
+		print(x)
+		
+	print('============获得指定元素==========================')
+	for aa in a.flat:
+		print(aa)
+		
+四、数组轴操作
+import numpy as np
+
+a = np.arange(24)
+
+print('===============设定数组维度及显示方式============================')
+c = np.reshape(a,(2,3,4),order = 'C')
+print(c.shape)
+
+print('==============转换为1维数组，=============================')
+print ('默认按行：', a.flatten())
+print ('指定按列：',a.flatten(order = 'F'))
+
+print('==============轴0 移动到 轴2 位置左边=============================')
+d = np.rollaxis(c,0,2)
+print(d.shape)
+
+print('=================轴2与轴0交换==========================')
+e = np.swapaxes(c, 2, 0)
+print (e.shape)
+
+print('================数组转置，维度顺序倒置===========================')
+print(c.T.shape)
+
+print('============concatenate沿指定轴连接数组===========')
+a = np.array([[1,2],[3,4]])
+b = np.array([[5,6],[7,8]])
+
+print (np.concatenate((a,b), axis=0))
+print (np.concatenate((a,b), axis = 1))
+
+print('===========================================')
+print('===========================================')
+print('===========================================')
+print('===========================================')

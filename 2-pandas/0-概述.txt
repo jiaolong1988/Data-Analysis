@@ -1,0 +1,5 @@
+Pandas处理以下三个数据结构 - 
+系列(Series)   		1D(大小不可改变)
+数据帧(DataFrame)	2D
+面板(Panel)			3D
+这些数据结构构建在Numpy数组之上，这意味着它们很快。

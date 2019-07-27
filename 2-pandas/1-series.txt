@@ -1,0 +1,14 @@
+#系列(Series)是能够保存任何类型的数据(整数，字符串，浮点数，Python对象等)的一维标记数组
+# pandas.Series( data, index, dtype, copy)
+
+import pandas as pd
+import numpy as np
+
+s = pd.Series([1,2,3,4,5],index = ['a','b','c','d','e'])
+print(s[2:])
+
+print('==================================================')
+
+data = {'a' : 0., 'b' : 1., 'c' : 2.}
+d = pd.Series(data, index=['a','c','b']) #index 的标签必须是 字典中的key
+print(d)

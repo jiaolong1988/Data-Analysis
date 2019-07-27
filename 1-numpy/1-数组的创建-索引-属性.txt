@@ -1,0 +1,172 @@
+http://www.runoob.com/numpy/numpy-array-attributes.html
+
+NumPy 最重要的一个特点是其 N 维数组对象 ndarray，
+ndarray 对象是用于存放同类型元素的多维数组，每个元素在内存中都有相同存储大小的区域。
+ndarray 对象由计算机内存的连续一维部分组成，并结合索引模式，将每个元素映射到内存块中的一个位置。
+内存块以行顺序或列顺序来保存元素。
+
+一、创建ndarry
+	# 最小维度  
+		import numpy as np 
+		a = np.array([1,  2,  3,4,5], ndmin =  2)  
+		print (a)
+
+	数组属性
+		ndarray.ndim	秩，即轴的数量或维度的数量
+		ndarray.shape	数组的维度，对于矩阵，n 行 m 列
+		ndarray.size	数组元素的总个数，相当于 .shape 中 n*m 的值
+		ndarray.dtype	ndarray 对象的元素类型
+		ndarray.itemsize	ndarray 对象中每个元素的大小，以字节为单位
+
+二、数据类型对象 (dtype)
+	数据类型对象是用来描述与数组对应的内存区域如何使用。
+	import numpy as np
+	student = np.dtype([('name','S20'), ('age', 'i1'), ('marks', 'f4')]) 
+	a = np.array([('abc', 21, 50),('xyz', 18, 75)], dtype = student) 
+	print(a)
+
+三、NumPy 数组属性
+1、概念解释
+	秩（rank）：数组的维数，是一个数字，例如3位数组，维数是3。
+	轴（axis）：是数组的一个维度。数组的维数是几，就有几个轴，轴的序号从0开始，从左向右。
+				举例：3维数组A[0,1,2]，可以理解为数组的下标的抽象，例如：3维数组A中一个元素的位置为：A[0,0,0]
+					在数组元素的角度表示位置：
+						A[0,0,0]
+					在轴的角度
+						A[0,1,2]表示数组中有3个轴，轴的序号为0,1,2。
+				
+				移动轴或交换轴，就是修改数组维度序号的顺序，从而产生新的数组。例如：
+				A[0,1,2]-->A[1,2,0],就是将0这个维度移到最后的位置，
+				根据这个规则会产生一个新的数组，对应变量：1(001) -> 2(010)
+						  1是数组A的一个值位置为001(轴的顺序为012)，现在由于将0这个维度移2的后边既A[120],因此这个变量的位置修改为
+						  010（将第一个0移动到最后），从而找到原数组A中元素的值，产生新的数组。
+				
+	例如：
+	[[[1 2 3],[4,5,6]]]
+	rank:3(数最外边的[)
+	axis:第一个轴的长度为1:[[[1 2 3],[4,5,6]]]
+		 第二个轴的长度为2:[[1 2 3],[4,5,6]]
+		 第三个轴的长度为3:[1 2 3]
+	
+2、设置数组的维度
+	import numpy as np 
+	 
+	a = np.arange(36)  
+	b = a.reshape(4,3,3,1)  # b 现在拥有4个维度：有几个数字表示几个维度。
+	#b = a.shape =  (4,3,3,1)  
+	print('维数：',b.ndim)
+	print('维度：',b.shape)
+	
+	#reshape(4,3,3,1)，数组的维度是4*3*3*1，既数组的长度，第一个数组长度为4，第二个数组长度为3，第三个数组长度为3，
+	#第四个数组长度为1。最后两位数字也可理解为 行数、列数。
+	
+四、NumPy 创建新数组
+	#1、空类型(注意 − 数组元素为随机值，因为它们未初始化。)
+	import numpy as np 
+	x = np.empty([3,2], dtype = int) 
+	print (x)
+
+	#2、0数组
+	z = np.zeros((2,2), dtype = [('x', 'i4'), ('y', 'i4')])  
+	print(z)
+
+
+	#3、1数组
+	x = np.ones([2,2], dtype = int)
+	print(x)
+	
+	#4、创建指定维度的随机数组
+
+		#1、创建一个3*5的一个二维数组，随机数在100~200之间
+		g=np.random.randint(100,200,(3,5))
+		print(type(g))
+
+		# 2、创建 randn(size) 服从 X~N(0,1) 的正态分布随机数组
+		h = np.random.randn(3,4,5)
+		print(h)
+
+
+
+五、从已有的数组创建数组
+	1、#将元组列表转换为 ndarray
+	x =  [(1,2,3),(4,5)] 
+	a = np.asarray(x)  
+	print (a)
+
+	2、使用迭代器创建 ndarray 
+	it=iter(range(5))
+	
+	# 使用迭代器创建 ndarray 
+	x=np.fromiter(it, dtype=float)
+	print(x)
+
+六、NumPy 从数值范围创建数组
+	1、使用 arange 函数创建数值范围并返回 ndarray 对象
+	#设置了起始值、终止值及步长：
+	import numpy as np
+	x = np.arange(10,20,2)  
+	print (x)
+	
+	2、创建一个一维数组，数组是一个等差数列构成
+	#设置起始点为 1 ，终止点为 10，数列个数为 10。
+	import numpy as np
+	a = np.linspace(10,20,5, endpoint =  False,retstep= True))
+	print(a)
+	
+	#endpoint	该值为 ture 时，数列中中包含stop值，反之不包含，默认是True。
+	#retstep	如果为 True 时，生成的数组中会显示间距，反之不显示。
+	
+七、NumPy 切片和索引
+	重要：ndarray对象的内容可以通过索引或切片来访问和修改，与 Python 中 list 的切片操作一样
+
+	1、#通过冒号分隔切片参数 start:stop:step 来进行切片操作
+	import numpy as np
+	a = np.arange(10)  
+	b = a[2:7:2]   # 从索引 2 开始到索引 7 停止，间隔为 2
+	print(b)	
+
+	2、省略号 …	切片
+	import numpy as np
+	a = np.array([[1,2,3],[3,4,5],[4,5,6]])  
+	print (a[...,1])   # 第2列元素
+	print (a[1,...])   # 第2行元素
+	print (a[...,1:])  # 第2列及剩下的所有元素
+	
+八、NumPy 高级索引
+1、整数数组索引
+	import numpy as np 
+	 
+	x = np.array([[  0,  1,  2],[  3,  4,  5],[  6,  7,  8],[  9,  10,  11]])  
+	print (x)
+	print('=========================')
+	rows = np.array([[0,0],[3,3]]) 
+	cols = np.array([[0,2],[0,2]]) 
+	y = x[rows,cols]  
+	print  ('这个数组的四个角元素是：', y)
+
+	
+2、布尔索引
+	import numpy as np 
+	 
+	x = np.array([[  0,  1,  2],[  3,  4,  5],[  6,  7,  8],[  9,  10,  11]])  
+	print (x)
+	print  ('================================')
+	print ('大于 5 的元素是：',x[x >  5])
+	
+	使用了 ~（取补运算符）来过滤 NaN。
+	import numpy as np 
+	a = np.array([np.nan,  1,2,np.nan,3,4,5])  
+	print (a[~np.isnan(a)])
+	
+3、花式索引
+1、根据行的下标进行索引
+	import numpy as np 
+	x=np.arange(32).reshape((8,4))
+	print (x[[4,2,1,7]])
+	print (x[[-4,-2,-1,-7]])
+	
+2、根据行号、列号进行索引
+	import numpy as np 
+	x=np.arange(32).reshape((8,4))
+	print (x[np.ix_([1,5,7,2],[0,3,1,2])])
+	#设置了行的显示方式，列的显示方式

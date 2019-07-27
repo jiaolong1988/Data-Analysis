@@ -1,0 +1,8 @@
+#数据检查工具：missingno，可快速监测 .安装：pip install missingno 
+import missingno
+movie_data = pd.read_csv('pokemon.csv')
+
+missingno.matrix(movie_data)
+missingno.bar(movie_data)
+
+https://blog.csdn.net/Andy_shenzl/article/details/81633356
