@@ -39,6 +39,7 @@
 	
 	#条件筛选  重点
 	close_planets = time_light[time_light < 40]
+	close_planets1 = time_light[(time_light < 40) & (time_light < 50)]
 
 	注意：
 		要确保 算术运算 对所有元素数据类型 都有效。
